@@ -9,7 +9,7 @@ import secrets
 
 # curl -X POST -F "image=@Desktop/yolo_data/test/images/240_F_1192541_cGmwbG3iNBTHZjOCznx78nxbG4jNgL_jpg.rf.ffaa1d90739b21198c04e86e3c4f5968.jpg" http://localhost:5000/object_detection/yolov5m
 #model = torch.hub.load("ultralytics/yolov5", "custom", path="best.pt", force_reload=True)
-
+          
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 @app.route("/object_detection/yolov5m", methods=["GET", "POST"])
@@ -18,21 +18,26 @@ def predict():
         if "image" not in request.files:
             return "No image uploaded.", 400
         image_file = request.files["image"]
-        image_bytes = image_file.read()
-        img = Image.open(io.BytesIO(image_bytes))
+        
+        try:
+            image_bytes = image_file.read()
+            img = Image.open(io.BytesIO(image_bytes))
+            img.save("input.jpg")
+        except IOError:
+            return {"message": "Invalid image file."}, 400
+        
         #results = model(img, size=640)
         #result_array = results.render()[0]
 
         #result_array = cv2.cvtColor(result_array, cv2.COLOR_RGB2BGR)
-        #cv2.imwrite("yolo.jpg", result_array)
+        #cv2.imwrite("input.jpg", result_array)
 
         # Generate a unique filename for the uploaded image
         # filename = secrets.token_hex(8)+".jpg"
-        #container_client.upload_blob(name="yolo.jpg", data=result_array.tobytes(), overwrite=True)
-
-        return render_template("upload.html", image_path="output.jpg")
-    
-    return render_template("upload.html")
+        #container_client.upload_blob(name="input.jpg", data=result_array.tobytes(), overwrite=True)
+        
+        return render_template("upload.html", input_path="input.jpg", output_path="output.jpg")
+    return render_template("upload.html", input_path="input.jpg")
 
 
 @app.route("/", methods=["GET"])

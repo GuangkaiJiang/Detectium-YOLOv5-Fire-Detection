@@ -97,7 +97,7 @@
                 <div class="mb-4">
                     <h2>Input</h2>
                     <div id="dropzone">
-                        <img id="preview" class="img-fluid" src="/input.jpg" />
+                        <img id="preview" class="img-fluid" src="{{ url_for('static', filename=input_path) }}"  />
                     </div>
                     <form method="POST" enctype="multipart/form-data" id="upload-form">
                         <div class="mt-3">
@@ -167,11 +167,11 @@
                 };
             </script>
             
-            {% if image_path %}
+            {% if output_path %}
             <div class="col-lg-6 col-md-12">
                     <div class="mb-4">
                         <h2>Output</h2>
-                        <img src="{{ url_for('static', filename=image_path) }}" alt="Output" class="img-fluid">
+                        <img src="{{ url_for('static', filename=output_path) }}" alt="Output" class="img-fluid">
                     </div>
                 </div>
             {% endif %}
