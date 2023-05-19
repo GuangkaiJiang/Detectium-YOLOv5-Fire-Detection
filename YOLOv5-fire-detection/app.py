@@ -37,7 +37,7 @@ def predict():
         #container_client.upload_blob(name="input.jpg", data=result_array.tobytes(), overwrite=True)
         
         return render_template("upload.html", input_path="input.jpg", output_path="output.jpg")
-    return render_template("upload.html", input_path="input.jpg")
+    return render_template("upload.html", input_path="default.jpg")
 
 
 @app.route("/", methods=["GET"])
